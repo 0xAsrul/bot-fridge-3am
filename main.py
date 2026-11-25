@@ -26,6 +26,16 @@ def main():
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(ENTRY)
 
+    # Verify the write round-tripped: read the file back and make sure
+    # what landed on disk is exactly the line we intended to submit.
+    with open("/output/entry.txt", "r", encoding="utf-8") as f:
+        written = f.read()
+    if written != ENTRY:
+        raise SystemExit(
+            "verification failed: /output/entry.txt does not match the "
+            "intended entry (%r written, %r expected)" % (written, ENTRY)
+        )
+
     print("wrote %d characters to /output/entry.txt" % len(ENTRY))
 
 
